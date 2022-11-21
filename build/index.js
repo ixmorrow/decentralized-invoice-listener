@@ -53,7 +53,21 @@ const connection = new web3_js_1.Connection(cluster);
 const wallet = new anchor.Wallet(utils_1.walletKeypair);
 const provider = new anchor.AnchorProvider(connection, wallet, { commitment: "confirmed" });
 const program = new anchor.Program(decentralized_invoices_json_1.default, programId, provider);
+// event listeners
 program.addEventListener("CreateInvoiceEvent", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(event.topic);
+    console.log(event.uuid);
+}));
+program.addEventListener("PayInvoiceEvent", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(event.topic);
+    console.log(event.uuid);
+    console.log(event.amount);
+}));
+program.addEventListener("ExpireInvoiceEvent", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(event.topic);
+    console.log(event.uuid);
+}));
+program.addEventListener("UpdateInvoiceEvent", (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(event.topic);
     console.log(event.uuid);
 }));
