@@ -1,0 +1,288 @@
+{
+    "version": "0.1.0",
+    "name": "decentralized_invoices",
+    "instructions": [
+        {
+            "name": "createInvoice",
+            "accounts": [
+                {
+                    "name": "merchant",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "customer",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "invoice",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "paymentMint",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "uuid",
+                    "type": "u64"
+                },
+                {
+                    "name": "amount",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "payInvoice",
+            "accounts": [
+                {
+                    "name": "invoice",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "customer",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "merchant",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "customerTokenAcct",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "merchantTokenAcct",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "paymentMint",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "tokenProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "expireInvoice",
+            "accounts": [
+                {
+                    "name": "merchant",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "invoice",
+                    "isMut": true,
+                    "isSigner": false
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "updateInvoice",
+            "accounts": [
+                {
+                    "name": "merchant",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "invoice",
+                    "isMut": true,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "ix",
+                    "type": {
+                        "defined": "UpdateInvoiceIx"
+                    }
+                }
+            ]
+        }
+    ],
+    "accounts": [
+        {
+            "name": "Invoice",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "uuid",
+                        "type": "u64"
+                    },
+                    {
+                        "name": "customer",
+                        "type": {
+                            "option": "publicKey"
+                        }
+                    },
+                    {
+                        "name": "merchant",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "currency",
+                        "type": {
+                            "option": "publicKey"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "type": {
+                            "option": "u64"
+                        }
+                    },
+                    {
+                        "name": "paid",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "expired",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "created",
+                        "type": "i64"
+                    },
+                    {
+                        "name": "bump",
+                        "type": "u8"
+                    }
+                ]
+            }
+        }
+    ],
+    "types": [
+        {
+            "name": "UpdateInvoiceIx",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "customer",
+                        "type": {
+                            "option": "publicKey"
+                        }
+                    },
+                    {
+                        "name": "currency",
+                        "type": {
+                            "option": "publicKey"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "type": {
+                            "option": "u64"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "name": "CreateInvoiceEvent",
+            "fields": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "index": true
+                },
+                {
+                    "name": "uuid",
+                    "type": "u64",
+                    "index": false
+                }
+            ]
+        },
+        {
+            "name": "PayInvoiceEvent",
+            "fields": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "index": true
+                },
+                {
+                    "name": "uuid",
+                    "type": "u64",
+                    "index": false
+                },
+                {
+                    "name": "amount",
+                    "type": "u64",
+                    "index": false
+                }
+            ]
+        },
+        {
+            "name": "ExpireInvoiceEvent",
+            "fields": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "index": true
+                },
+                {
+                    "name": "uuid",
+                    "type": "u64",
+                    "index": false
+                }
+            ]
+        },
+        {
+            "name": "UpdateInvoiceEvent",
+            "fields": [
+                {
+                    "name": "topic",
+                    "type": "string",
+                    "index": true
+                },
+                {
+                    "name": "uuid",
+                    "type": "u64",
+                    "index": false
+                }
+            ]
+        }
+    ],
+    "errors": [
+        {
+            "code": 6000,
+            "name": "InvoiceExpired",
+            "msg": "Invoice has expired"
+        },
+        {
+            "code": 6001,
+            "name": "InvoiceStillValid",
+            "msg": "Invoice has not expired yet"
+        }
+    ],
+    "metadata": {
+        "address": "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+    }
+}
