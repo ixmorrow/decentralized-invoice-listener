@@ -24,7 +24,24 @@ const program = new anchor.Program(
     provider
 );
 
+// event listeners
 program.addEventListener("CreateInvoiceEvent", async (event) => {
+    console.log(event.topic)
+    console.log(event.uuid)
+})
+
+program.addEventListener("PayInvoiceEvent", async (event) => {
+    console.log(event.topic)
+    console.log(event.uuid)
+    console.log(event.amount)
+})
+
+program.addEventListener("ExpireInvoiceEvent", async (event) => {
+    console.log(event.topic)
+    console.log(event.uuid)
+})
+
+program.addEventListener("UpdateInvoiceEvent", async (event) => {
     console.log(event.topic)
     console.log(event.uuid)
 })
