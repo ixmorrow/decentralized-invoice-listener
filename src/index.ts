@@ -3,7 +3,6 @@ import DecentralizedInvoices from './idl/decentralized_invoices.json'
 import * as anchor from '@project-serum/anchor'
 import { PublicKey, Keypair, Connection, clusterApiUrl } from '@solana/web3.js'
 import { safeAirdrop, walletKeypair } from './utils/utils'
-var cron = require('node-cron')
 const bodyParser = require("body-parser")
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
